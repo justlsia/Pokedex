@@ -37,17 +37,16 @@ app.listen(
 app.all('/', (req, res, next) => {
     console.log('Accessing the root page ...');
     next() // pass control to the next handler
-  })
-
-// Créer le chemin hasard
-app.all('/hasard', (req, res, next) => {
-    console.log('Accessing the hasard page ...');
-    next() // pass control to the next handler
-  })
-
+})
 
 // Afficher le chemin racine à l'accueil du site
 // GET method route
 app.get('/', (req, res) => {
     res.send('Bienvenue sur la page principales');
-  })
+})
+
+// Créer le chemin hasard
+app.get('/hasard', (req, res) => {
+    res.send('Page hasard')
+})
+
