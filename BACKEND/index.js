@@ -1,8 +1,9 @@
 // Librairies
 import fs, { read } from 'fs';
-import express from 'express';
+import express, { response } from 'express';
 import cors from 'cors';
 import path from 'path'; // Gérer des chemins d'accès 
+import { request } from 'http';
 
 // Chemins des fichiers de données
 const POKEDEX_SRC = "./DATA/pokedex.json";      
@@ -23,9 +24,9 @@ app.use('/images', express.static(path.resolve(IMAGES_SRC)));
 
 app.listen(
     PORT,
-    '0.0.0.0',
+    '127.0.0.1',
     () => {
-        console.log('Server Pokedex is listening on http://172.16.201.254:' + PORT);
+        console.log('Server Pokedex is listening on http://localhost:' + PORT);
     }
 )
 
@@ -33,12 +34,6 @@ app.use(cors());
 
 // Renvoyer tous les pokémon
 const findAllPokemon = (req, res) => {
-
-    // test
-    if (req.query.apikey !== "hihi") {
-        res.status(401).send('Erreur, API key incorrect');
-        return;
-    }
 
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
@@ -52,7 +47,6 @@ const findAllPokemon = (req, res) => {
 
 // Renvoyer un pokémon au hasard
 const findRandomPokemon = (req, res) => {
-
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
 
@@ -137,9 +131,10 @@ const findPokemonByPointOfDefense = (req, res) => {
 
 
 // Chemins des requêtes navigateur
-app.get('/', findAllPokemon);
+//app.get('/', findAllPokemon);
+app.get('/:apikey(\\w+)', findAllPokemon); // test apikey
 app.get('/hasard', findRandomPokemon);
 app.get('/pokemon/:id(\\d+)', findPokemonById); // para chiffres
-app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
+//app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
 
 app.get('/pokemon/types/:type(\\w+)', findPokemonByType); // para string
