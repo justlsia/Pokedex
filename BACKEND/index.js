@@ -23,9 +23,9 @@ app.use('/images', express.static(path.resolve(IMAGES_SRC)));
 
 app.listen(
     PORT,
-    '127.0.0.1',
+    '0.0.0.0',
     () => {
-        console.log('Server Pokedex is listening on http://localhost:' + PORT);
+        console.log('Server Pokedex is listening on http://172.16.201.254:' + PORT);
     }
 )
 
@@ -33,6 +33,13 @@ app.use(cors());
 
 // Renvoyer tous les pokémon
 const findAllPokemon = (req, res) => {
+
+    // test
+    if (req.query.apikey !== "hihi") {
+        res.status(401).send('Erreur, API key incorrect');
+        return;
+    }
+
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
 
@@ -45,6 +52,7 @@ const findAllPokemon = (req, res) => {
 
 // Renvoyer un pokémon au hasard
 const findRandomPokemon = (req, res) => {
+
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
 
