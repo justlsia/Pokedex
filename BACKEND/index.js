@@ -1,9 +1,8 @@
 // Librairies
 import fs, { read } from 'fs';
-import express, { response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import path from 'path'; // Gérer des chemins d'accès 
-import { request } from 'http';
 
 // Chemins des fichiers de données
 const POKEDEX_SRC = "./DATA/pokedex.json";      
@@ -24,9 +23,9 @@ app.use('/images', express.static(path.resolve(IMAGES_SRC)));
 
 app.listen(
     PORT,
-    '127.0.0.1',
+    '0.0.0.0',
     () => {
-        console.log('Server Pokedex is listening on http://localhost:' + PORT);
+        console.log('Server Pokedex is listening on http://172.16.201.254:' + PORT);
     }
 )
 
@@ -34,6 +33,12 @@ app.use(cors());
 
 // Renvoyer tous les pokémon
 const findAllPokemon = (req, res) => {
+
+    // Vérifier clé api
+    if (req.query.apikey !== "OFJELOGJyulkg5erg9*gsj@efhbE5") {
+        res.status(401).send('Erreur, API key incorrect');
+        return;
+    }
 
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
@@ -47,6 +52,13 @@ const findAllPokemon = (req, res) => {
 
 // Renvoyer un pokémon au hasard
 const findRandomPokemon = (req, res) => {
+
+    // Vérifier clé api
+    if (req.headers.apikey !== "OFJELOGJyulkg5erg9*gsj@efhbE5") {
+        res.status(401).send('Erreur, API key incorrect');
+        return;
+    }
+
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
 
@@ -125,16 +137,15 @@ const findPokemonByPointOfDefense = (req, res) => {
     const datas = fs.readFileSync(POKEDEX_SRC)
     const pokedex = JSON.parse(datas)
     const defensePoint = req.params.base.Defense
-    //const pokemon
+    //
 
 }
 
 
 // Chemins des requêtes navigateur
-//app.get('/', findAllPokemon);
-app.get('/:apikey(\\w+)', findAllPokemon); // test apikey
+app.get('/', findAllPokemon);
 app.get('/hasard', findRandomPokemon);
 app.get('/pokemon/:id(\\d+)', findPokemonById); // para chiffres
-//app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
+app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
 
 app.get('/pokemon/types/:type(\\w+)', findPokemonByType); // para string
