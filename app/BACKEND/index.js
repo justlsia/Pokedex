@@ -35,15 +35,12 @@ app.use(cors());
 // Renvoyer tous les pokémon
 const findAllPokemon = (req, res) => {
 
-<<<<<<< HEAD:app/BACKEND/index.js
     // Vérifier l'apikey
     //if (req.res.apikey !== "jkrgde@qg14q-") {
     //    response.status(401).send('Erreur, apikey incorrecte!');
     //    return;
     //}
 
-=======
->>>>>>> origin/main:BACKEND/index.js
     // Lecture du fichier
     const datas = fs.readFileSync(POKEDEX_SRC)
 
@@ -140,13 +137,10 @@ const findPokemonByPointOfDefense = (req, res) => {
 
 
 // Chemins des requêtes navigateur
-<<<<<<< HEAD:app/BACKEND/index.js
 app.get('/', findAllPokemon);
 //app.get('/:apikey(\\w+)', findAllPokemon); // test apikey
-=======
 //app.get('/', findAllPokemon);
 app.get('/:apikey(\\w+)', findAllPokemon); // test apikey
->>>>>>> origin/main:BACKEND/index.js
 app.get('/hasard', findRandomPokemon);
 app.get('/pokemon/:id(\\d+)', findPokemonById); // para chiffres
 //app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
