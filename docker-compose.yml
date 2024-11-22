@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  pokedex-nodejs:
+    volumes:
+        - ./app:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+
+  # Service qui va contenir l'application FRONTEND  
+  pokedex-frontend:
+    image: nginx:latest
+    ports:
+      - "808:80"
+    volumes : 
+      # On monte le dossier FRONTEND dans le dossier racine de Nginx
+      - ./app/FRONTEND:/usr/share/nginx/html
