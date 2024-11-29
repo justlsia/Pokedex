@@ -1,16 +1,18 @@
 FROM node:18
 
-WORKDIR /app/BACKEND
+WORKDIR /app
 
 COPY app/BACKEND/package.json ./
-COPY app/BACKEND/package-lock.json ./
-COPY app/BACKEND/index.js ./
+#COPY app/BACKEND/package-lock.json ./
+#COPY app/BACKEND/index.js ./
 
 
 RUN npm install
-RUN npm install nodemon
+RUN npm install -g nodemon
 
-RUN ls -lah
+#RUN ls -lah
+
+COPY app/BACKEND/ . 
 
 #CMD ["npm", "run", "start"]
 CMD ["nodemon", "index.js"]

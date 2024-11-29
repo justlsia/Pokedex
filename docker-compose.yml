@@ -1,13 +1,16 @@
-version: '3.7'
+version: '3.8'
 services:
   pokedex-nodejs:
-    volumes:
-        - ./app:/app
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
+    volumes:
+      - ./app/BACKEND:/app
+      - /app/node_modules
+
+    #command: sh -c "npm install && nodemon index.js"
 
   # Service qui va contenir l'application FRONTEND  
   pokedex-frontend:
