@@ -143,6 +143,6 @@ app.get('/', findAllPokemon);
 app.get('/:apikey(\\w+)', findAllPokemon); // test apikey
 app.get('/hasard', findRandomPokemon);
 app.get('/pokemon/:id(\\d+)', findPokemonById); // para chiffres
-//app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
+app.get('/pokemon/:name(\\w+)', findPokemonByName); // para string
 
 app.get('/pokemon/types/:type(\\w+)', findPokemonByType); // para string
