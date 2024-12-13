@@ -27,16 +27,17 @@ jobs:
         # Actions à réaliser
         run: |
           # Fichier SSH
-          mkdir -p ~/ .ssh/
-          echo "$SSH_KEY" > ~/ .ssh/id_rsa.key
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/id_rsa.key
           # Attribution des droits
-          chmod 600 ~/ .ssh/id_rsa.key
-          cat >>~/ .ssh/config <<END
+          chmod 600 ~/.ssh/id_rsa.key
+          cat >>~/.ssh/config <<END
           # Connexion
             Host serveurProd
               HostName $SSH_HOST
               User $SSH_USER
-              IdentityFile ~/ .ssh/id_rsa.key
+              Port $SSH_PORT
+              IdentityFile ~/.ssh/id_rsa.key
               StrictHostChecking no
           END
       - name: "Connexion au serveur de prod"
