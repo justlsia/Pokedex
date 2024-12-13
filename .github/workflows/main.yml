@@ -1,0 +1,45 @@
+#  Nom du workflow
+name: "Déploiement auto suite à un push"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+
+#-----------------------------------
+
+
+jobs:
+  creation-vm:
+    name: "Création instance Ubuntu"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Création du jeu de clés pour l'utilisateur deploy"
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+
+        # Actions à réaliser
+        run: |
+          # Fichier SSH
+          mkdir -p ~/ .ssh/
+          echo "$SSH_KEY" > ~/ .ssh/id_rsa.key
+          # Attribution des droits
+          chmod 600 ~/ .ssh/id_rsa.key
+          cat >>~/ .ssh/config <<END
+          # Connexion
+            Host serveurProd
+              HostName $SSH_HOST
+              User $SSH_USER
+              IdentityFile ~/ .ssh/id_rsa.key
+              StrictHostChecking no
+          END
+      - name: "Connexion au serveur de prod"
+            # Git Push
+        run: | 
+          ssh serveurProd 'cd /var/www/html/Pokedex && git fetch && git pull'
